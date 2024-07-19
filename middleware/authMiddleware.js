@@ -14,7 +14,9 @@ module.exports = async (req, res, next) => {
     }
 
     // Find the associated user
-    const user = await UserProfile.findByPk(tokenRecord.user_id);
+    const user = await UserProfile.findByPk(tokenRecord.user_id, {
+      attributes: ['user_id', 'user_name', 'name', 'gender', 'email']
+    });
     if (!user) {
       return res.status(404).json({ error: 'User not found.' });
     }

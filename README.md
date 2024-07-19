@@ -47,5 +47,5 @@ Search Notes: GET /note_maker/notes/search?query=<query>
 ```
 # Tags
 ```
-Create Tag: POST /tags
+Create Tag: POST note_maker/tag/create
 ```
