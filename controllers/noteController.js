@@ -3,20 +3,24 @@ const { Op } = require('sequelize');
 
 exports.createNote = async (req, res) => {
   try {
-    const { title, content, background_colour, tags } = req.body;
-    if (tags.length > 9) {
+    const { title, content, background_colour, tag_ids = [] } = req.body;
+    if (tag_ids.length > 9) {
       return res.status(400).json({ error: 'Cannot have more than 9 tags' });
     }
     const note = await Note.create({ title, content, background_colour, user_id: req.user.user_id });
-    const tagInstances = await Tag.findAll({
-      where: {
-        tag_name: {
-          [Op.in]: tags
+
+    if (tag_ids.length > 0) {
+      const tagInstances = await Tag.findAll({
+        where: {
+          tag_id: {
+            [Op.in]: tag_ids
+          }
         }
-      }
-    });
-    await note.addTags(tagInstances);
-    res.status(201).json("note created successfully");
+      });
+      await note.addTags(tagInstances);
+    }
+
+    res.status(201).json("Note created successfully");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -157,17 +161,31 @@ exports.unTrashNote = async (req, res) => {
 
 exports.updateNote = async (req, res) => {
   try {
-    const { title, content, background_colour } = req.body;
+    const { title, content, background_colour, tag_ids = [] } = req.body;
     const note = await Note.findByPk(req.params.id);
+
     if (!note || note.user_id !== req.user.user_id) {
       return res.status(404).json({ error: 'Note not found' });
     }
+
     note.title = title || note.title;
     note.content = content || note.content;
     note.background_colour = background_colour || note.background_colour;
     note.updatedAt = new Date();
     await note.save();
-    res.status(201).json("note updated successfully");
+
+    if (tag_ids.length > 0) {
+      const tagInstances = await Tag.findAll({
+        where: {
+          tag_id: {
+            [Op.in]: tag_ids
+          }
+        }
+      });
+      await note.setTags(tagInstances);
+    }
+
+    res.status(201).json("Note updated successfully");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -209,23 +227,22 @@ exports.searchNotes = async (req, res) => {
   }
 };
 
+
 exports.createTag = async (req, res) => {
   try {
     const { tag_name } = req.body;
-    
     if (!tag_name) {
       return res.status(400).json({ error: 'Tag name is required' });
     }
 
-    // Check if the tag already exists
     const existingTag = await Tag.findOne({ where: { tag_name } });
     if (existingTag) {
       return res.status(400).json({ error: 'Tag already exists' });
     }
 
-    // Create the new tag
+
     const tag = await Tag.create({ tag_name });
-    res.status(201).json({ message: 'Tag created successfully', tag });
+    res.status(201).json(tag);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
