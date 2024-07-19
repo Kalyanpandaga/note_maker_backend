@@ -15,16 +15,16 @@ const {
 } = require('../controllers/noteController');
 const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/', authMiddleware, createTag);
-router.post('/', authMiddleware, createNote);
-router.get('/', authMiddleware, getUserNotes);
-router.get('/archived', authMiddleware, getArchivedNotes);
-router.get('/trashed', authMiddleware, getTrashedNotes);
-router.get('/search', authMiddleware, searchNotes);
-router.put('/:id/archive', authMiddleware, archiveNote);
-router.put('/:id/trash', authMiddleware, trashNote);
-router.put('/:id/unarchive', authMiddleware, unArchiveNote);
-router.put('/:id/untrash', authMiddleware, unTrashNote);
-router.put('/:id', authMiddleware, updateNote);
+router.post('/tag/create', authMiddleware, createTag);
+router.post('/note/create', authMiddleware, createNote);
+router.get('/user/notes', authMiddleware, getUserNotes);
+router.get('/user/archived/notes', authMiddleware, getArchivedNotes);
+router.get('/user/trashed/notes', authMiddleware, getTrashedNotes);
+router.get('notes/search', authMiddleware, searchNotes);
+router.put('/note/:id/archive', authMiddleware, archiveNote);
+router.put('/note/:id/trash', authMiddleware, trashNote);
+router.put('/note/:id/unarchive', authMiddleware, unArchiveNote);
+router.put('/note/:id/untrash', authMiddleware, unTrashNote);
+router.put('/note/:id/update', authMiddleware, updateNote);
 
 module.exports = router;

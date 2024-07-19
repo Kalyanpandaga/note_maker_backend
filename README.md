@@ -34,15 +34,15 @@ A backend service for managing notes with features like creating, updating, arch
 ## API Endpoints
 # Notes
 ```
-Create Note: POST /notes
-Get User Notes: GET /notes
-Get Archived Notes: GET /notes/archived
-Get Trashed Notes: GET /notes/trashed
-Archive Note: PUT /notes/:id/archive
-Trash Note: PUT /notes/:id/trash
-Unarchive Note: PUT /notes/:id/unarchive
-Untrash Note: PUT /notes/:id/untrash
-Update Note: PUT /notes/:id
+Create Note: POST /note/create
+Get User Notes: GET /user/notes
+Get Archived Notes: GET /user/archived/notes
+Get Trashed Notes: GET /user/trashed/notes
+Archive Note: PUT /note/:id/archive
+Trash Note: PUT /note/:id/trash
+Unarchive Note: PUT /note/:id/unarchive
+Untrash Note: PUT /note/:id/untrash
+Update Note: PUT /note/:id/update
 Search Notes: GET /notes/search?query=<query>
 ```
 # Tags
