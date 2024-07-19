@@ -17,9 +17,9 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/tag/create', authMiddleware, createTag);
 router.post('/note/create', authMiddleware, createNote);
-router.get('/user/notes', authMiddleware, getUserNotes);
-router.get('/user/archived/notes', authMiddleware, getArchivedNotes);
-router.get('/user/trashed/notes', authMiddleware, getTrashedNotes);
+router.get('/notes', authMiddleware, getUserNotes);
+router.get('/archived/notes', authMiddleware, getArchivedNotes);
+router.get('/trashed/notes', authMiddleware, getTrashedNotes);
 router.get('notes/search', authMiddleware, searchNotes);
 router.put('/note/:id/archive', authMiddleware, archiveNote);
 router.put('/note/:id/trash', authMiddleware, trashNote);

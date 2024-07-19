@@ -36,9 +36,9 @@ exports.getUserNotes = async (req, res) => {
       },
       include: [{
         model: Tag,
-        attributes: ['id', 'tag_name']
+        attributes: ['tag_id', 'tag_name']
       }],
-      attributes: ['id', 'title', 'content', 'background_colour'],
+      attributes: ['note_id', 'title', 'content', 'background_colour'],
       order: [['createdAt', 'DESC']]
     });
     res.status(200).json(notes);
@@ -59,9 +59,9 @@ exports.getArchivedNotes = async (req, res) => {
       },
       include: [{
         model: Tag,
-        attributes: ['id', 'tag_name']
+        attributes: ['tag_id', 'tag_name']
       }],
-      attributes: ['id', 'title', 'content', 'background_colour', 'archived_at'],
+      attributes: ['note_id', 'title', 'content', 'background_colour', 'archived_at'],
       order: [['archived_at', 'DESC']]
     });
     res.status(200).json(notes);
@@ -84,9 +84,9 @@ exports.getTrashedNotes = async (req, res) => {
       },
       include: [{
         model: Tag,
-        attributes: ['id', 'tag_name']
+        attributes: ['tag_id', 'tag_name']
       }],
-      attributes: ['id', 'title', 'content', 'background_colour', 'trashed_at'],
+      attributes: ['note_id', 'title', 'content', 'background_colour', 'trashed_at'],
       order: [['trashed_at', 'DESC']]
     });
     res.status(200).json(notes);
@@ -161,8 +161,8 @@ exports.unTrashNote = async (req, res) => {
 
 exports.updateNote = async (req, res) => {
   try {
-    const { title, content, background_colour, tag_ids = [] } = req.body;
-    const note = await Note.findByPk(req.params.id);
+    const { title, content, background_colour, tag_ids} = req.body;
+    const note = await Note.findByPk(req.params.note_id);
 
     if (!note || note.user_id !== req.user.user_id) {
       return res.status(404).json({ error: 'Note not found' });

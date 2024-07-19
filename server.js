@@ -9,8 +9,8 @@ const userRoute = require('./routes/userRoutes');
 app.use(bodyParser.json());
 
 app.use('/auth', authRoute);
-app.use('/notes', noteRoute);
-app.use('/users', userRoute);
+app.use('/note_maker/', noteRoute);
+app.use('/user', userRoute);
 
 const PORT = process.env.PORT || 3000;
 
